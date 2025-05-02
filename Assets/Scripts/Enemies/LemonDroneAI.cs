@@ -8,6 +8,8 @@ public class LemonDroneAI : MonoBehaviour
     [SerializeField] private Transform firePoint;
     private Collider2D droneCollider;
 
+    private PatrolBehaviour patrolBehaviour;
+
     [Header("Movement parameters")]
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private float desiredHeight = 3f;
@@ -46,14 +48,34 @@ public class LemonDroneAI : MonoBehaviour
         droneCollider = GetComponent<Collider2D>();
         if (droneCollider == null) Debug.LogError("Collider2D not found on drone!", this);
 
+        patrolBehaviour = GetComponent<PatrolBehaviour>();
+        if (patrolBehaviour == null) Debug.LogError("PatrolBehaviour not found on drone!", this);
+
         nextFireTime = Time.time + Random.Range(0f, fireRate);
     }
 
     void FixedUpdate()
     {
-        if (playerTarget == null || rb == null) return;
+        if (rb == null) return;
 
-        HandleMovement();
+        bool playerDetected = false;
+        if (playerTarget != null) {
+            float distanceToPlayer = Vector2.Distance(transform.position, playerTarget.position);
+            if (distanceToPlayer <= detectionRange) {
+                playerDetected = true;
+                HandleCombatMovement();
+            }
+        }
+
+        if (!playerDetected) {
+            if (patrolBehaviour != null && patrolBehaviour.enabled) {
+                Debug.Log("Drone State: Patroling");
+                patrolBehaviour.UpdatePatrolMovement();
+            }
+            else {
+                rb.linearVelocity *= dampingFactor;
+            }
+        }
     }
 
     void Update()
@@ -63,7 +85,7 @@ public class LemonDroneAI : MonoBehaviour
          HandleShooting();
     }
 
-    void HandleMovement()
+    void HandleCombatMovement()
     {
         Vector2 directionToPlayer = playerTarget.position - transform.position;
         float distanceToPlayer = directionToPlayer.magnitude;

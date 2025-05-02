@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 9211716177281823380}
   - component: {fileID: 8807444932196995160}
   - component: {fileID: 1853207276370830516}
+  - component: {fileID: 735977224821132049}
   m_Layer: 0
   m_Name: LemonDrone
   m_TagString: Untagged
@@ -142,6 +143,25 @@ MonoBehaviour:
   projectilePrefab: {fileID: 7612157149470975524, guid: c39337f49c0dd47cda9696b4db042f74, type: 3}
   fireRate: 1.5
   shootingRange: 12
+--- !u!114 &735977224821132049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2858512217852823519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3d31363542a2415d859206ec312dd18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waypoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  patrolSpeed: 2
+  patrolForce: 5
+  waypointReachedDistance: 0.5
+  waitAtWaypointTime: 1
 --- !u!1001 &442476211862316307
 PrefabInstance:
   m_ObjectHideFlags: 0
