@@ -11,6 +11,11 @@ public class PlayerMovement : MonoBehaviour
     public GameObject gun;
     public GameObject head;
 
+    // --- Флаг и переменная для отбрасывания ---
+    private bool applyKnockbackVelocity = false;
+    private Vector2 knockbackVelocityToApply = Vector2.zero;
+    // -----------------------------------------
+
     private Rigidbody2D rb;
     private Vector2 moveDirection = Vector2.zero;
     private bool isGrounded;
@@ -55,15 +60,30 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
+        // Проверяем землю ПЕРЕД применением прыжка
+        CheckIfGrounded(); 
         if (context.performed && isGrounded)
         {
+            // Применяем вертикальную скорость напрямую
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
         }
     }
 
     void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(moveDirection.x * moveSpeed, rb.linearVelocity.y);
+        // --- Проверяем флаг отбрасывания --- 
+        if (applyKnockbackVelocity)
+        {
+            rb.linearVelocity = knockbackVelocityToApply; // Применяем запомненную скорость
+            applyKnockbackVelocity = false; // Сбрасываем флаг
+            // Debug.Log("Applied knockback velocity in FixedUpdate");
+        }
+        else
+        {
+            // Применяем обычное движение, если нет отбрасывания
+            rb.linearVelocity = new Vector2(moveDirection.x * moveSpeed, rb.linearVelocity.y);
+        }
+        // -----------------------------------
     }
 
     void CheckIfGrounded()
@@ -95,12 +115,28 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void SetKnockbackVelocity(Vector2 knockbackVelocity)
+    {
+        applyKnockbackVelocity = true;
+        knockbackVelocityToApply = knockbackVelocity;
+        // Debug.Log($"Knockback requested. Velocity to apply: {knockbackVelocityToApply}");
+    }
+    // ---------------------------------------------------
+
+    // --- Геттер для isGrounded --- 
+     public bool GetIsGrounded()
+     {
+         return isGrounded;
+     }
+    // -----------------------------
+
     void SetAnimatorSpeedValue() 
     {
         float speed = Mathf.Abs(rb.linearVelocity.magnitude);
             
         animator.SetFloat("Speed", speed);
     }
+
 
     void OnDrawGizmosSelected()
     {

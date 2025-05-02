@@ -3093,6 +3093,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1349063587}
     - target: {fileID: 1853207276370830516, guid: 90866217969c441ba852ad891e79963d, type: 3}
+      propertyPath: fireRate
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1853207276370830516, guid: 90866217969c441ba852ad891e79963d, type: 3}
       propertyPath: firePoint
       value: 
       objectReference: {fileID: 1397694042}
