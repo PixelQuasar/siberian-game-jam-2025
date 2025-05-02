@@ -60,30 +60,24 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        // Проверяем землю ПЕРЕД применением прыжка
         CheckIfGrounded(); 
         if (context.performed && isGrounded)
         {
-            // Применяем вертикальную скорость напрямую
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
         }
     }
 
     void FixedUpdate()
     {
-        // --- Проверяем флаг отбрасывания --- 
         if (applyKnockbackVelocity)
         {
-            rb.linearVelocity = knockbackVelocityToApply; // Применяем запомненную скорость
-            applyKnockbackVelocity = false; // Сбрасываем флаг
-            // Debug.Log("Applied knockback velocity in FixedUpdate");
+            rb.linearVelocity = knockbackVelocityToApply;
+            applyKnockbackVelocity = false;
         }
         else
         {
-            // Применяем обычное движение, если нет отбрасывания
             rb.linearVelocity = new Vector2(moveDirection.x * moveSpeed, rb.linearVelocity.y);
         }
-        // -----------------------------------
     }
 
     void CheckIfGrounded()
@@ -119,16 +113,12 @@ public class PlayerMovement : MonoBehaviour
     {
         applyKnockbackVelocity = true;
         knockbackVelocityToApply = knockbackVelocity;
-        // Debug.Log($"Knockback requested. Velocity to apply: {knockbackVelocityToApply}");
     }
-    // ---------------------------------------------------
 
-    // --- Геттер для isGrounded --- 
      public bool GetIsGrounded()
      {
          return isGrounded;
      }
-    // -----------------------------
 
     void SetAnimatorSpeedValue() 
     {
