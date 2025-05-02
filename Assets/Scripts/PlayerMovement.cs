@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
     public Transform groundCheck;
     public float groundCheckRadius = 0.2f;
     public LayerMask groundLayer;
+    public GameObject gun;
+    public GameObject head;
 
     // --- Флаг и переменная для отбрасывания ---
     private bool applyKnockbackVelocity = false;
@@ -20,7 +22,11 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector2 aimWorldPosition;
 
-    private float originalScaleX;
+    private Animator animator;
+
+    private SpriteRenderer mySR;
+    private SpriteRenderer gunSR;
+    private SpriteRenderer headSR;
 
     void Start()
     {
@@ -28,13 +34,18 @@ public class PlayerMovement : MonoBehaviour
         if (rb == null) Debug.LogError("Rigidbody2D not found!");
         if (groundCheck == null) Debug.LogError("GroundCheck not assigned!");
 
-        originalScaleX = transform.localScale.x;
+        animator = GetComponent<Animator>();
+
+        mySR = GetComponent<SpriteRenderer>();
+        gunSR = gun.GetComponent<SpriteRenderer>();
+        headSR = head.GetComponent<SpriteRenderer>();
     }
 
     void Update()
     {
         CheckIfGrounded();
         FlipTowardsAim();
+        SetAnimatorSpeedValue();
     }
 
     public void SetAimPosition(Vector2 worldPos)
@@ -86,15 +97,24 @@ public class PlayerMovement : MonoBehaviour
 
         if (directionToAim > 0.01f)
         {
-            transform.localScale = new Vector3(-Mathf.Abs(originalScaleX), transform.localScale.y, transform.localScale.z);
+            mySR.flipX = true;
+            //transform.localScale = new Vector3(-Mathf.Abs(originalScaleX), transform.localScale.y, transform.localScale.z);
+            gunSR.flipY = false;
+            headSR.flipY = false;
+            //gunSR.flipY = true;
+            //headSR.flipX = false;
         }
         else if (directionToAim < -0.01f)
         {
-            transform.localScale = new Vector3(Mathf.Abs(originalScaleX), transform.localScale.y, transform.localScale.z);
+            mySR.flipX = false;
+            //transform.localScale = new Vector3(Mathf.Abs(originalScaleX), transform.localScale.y, transform.localScale.z);
+            gunSR.flipY = true;
+            headSR.flipY = true;
+            //gunSR.flipY = false;
+            //headSR.flipX = true;
         }
     }
 
-    // --- Метод для получения команды на отбрасывание --- 
     public void SetKnockbackVelocity(Vector2 knockbackVelocity)
     {
         applyKnockbackVelocity = true;
@@ -109,6 +129,14 @@ public class PlayerMovement : MonoBehaviour
          return isGrounded;
      }
     // -----------------------------
+
+    void SetAnimatorSpeedValue() 
+    {
+        float speed = Mathf.Abs(rb.linearVelocity.magnitude);
+            
+        animator.SetFloat("Speed", speed);
+    }
+
 
     void OnDrawGizmosSelected()
     {
