@@ -20,8 +20,8 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        if (rb == null) Debug.LogError("Rigidbody2D не найден!");
-        if (groundCheck == null) Debug.LogError("Объект GroundCheck не назначен!");
+        if (rb == null) Debug.LogError("Rigidbody2D not found!");
+        if (groundCheck == null) Debug.LogError("GroundCheck not assigned!");
 
         originalScaleX = transform.localScale.x;
     }
