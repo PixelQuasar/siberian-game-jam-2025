@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(PatrolBehaviour))]
 [RequireComponent(typeof(Collider2D))]
 public class LemonGuardAI : MonoBehaviour
 {
@@ -8,10 +9,14 @@ public class LemonGuardAI : MonoBehaviour
     private Collider2D guardCollider;
     private float originalScaleX;
     private Transform playerTarget;
+    private PatrolBehaviour patrolBehaviour;
 
     [Header("Movement")]
-    [Tooltip("Guard movement speed.")]
+    [Tooltip("Speed of movement.")]
     public float moveSpeed = 2f;
+    [Tooltip("Distance at which the guard starts retreating.")]
+    public float retreatDistance = 3f;
+    private bool shouldRetreat = false;
 
     [Header("Facing Logic")]
     [Tooltip("Minimum horizontal velocity to turn the enemy.")]
@@ -23,12 +28,13 @@ public class LemonGuardAI : MonoBehaviour
     public int shotsPerBurst = 3;
     public float timeBetweenShots = 0.15f;
     public float burstCooldown = 1.5f;
+    [Tooltip("Distance at which the guard starts attacking.")]
     public float attackRange = 10f;
 
     private int shotsFiredInBurst = 0;
     private float currentBurstCooldown = 0f;
     private float currentTimeBetweenShots = 0f;
-
+    private bool isPlayerInAttackRange = false;
 
     void Start()
     {
@@ -38,81 +44,134 @@ public class LemonGuardAI : MonoBehaviour
         guardCollider = GetComponent<Collider2D>();
         if (guardCollider == null) Debug.LogError("Collider2D not found on LemonGuard!", this);
 
+        patrolBehaviour = GetComponent<PatrolBehaviour>();
+        if (patrolBehaviour == null) Debug.LogError("PatrolBehaviour not found on LemonGuard!", this);
+
         originalScaleX = transform.localScale.x;
 
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         if (playerObject != null) playerTarget = playerObject.transform;
-        else Debug.LogError("Player with tag 'Player' not found! Attack will not work.", this);
+        else Debug.LogError("Player with tag 'Player' not found!", this);
 
         currentBurstCooldown = Random.Range(0f, burstCooldown);
+
+        if (retreatDistance >= attackRange) {
+            Debug.LogWarning("Retreat Distance should be less than Attack Range on LemonGuard!", this);
+        }
     }
 
     void Update()
     {
+        if (playerTarget == null) {
+            shouldRetreat = false;
+            isPlayerInAttackRange = false;
+            return;
+        }
+
         if (currentBurstCooldown > 0) currentBurstCooldown -= Time.deltaTime;
         if (currentTimeBetweenShots > 0) currentTimeBetweenShots -= Time.deltaTime;
 
-        FlipBasedOnVelocity();
+        float distanceToPlayer = Vector2.Distance(transform.position, playerTarget.position);
 
-        HandleBurstAttack();
+        if (distanceToPlayer < retreatDistance)
+        {
+            shouldRetreat = true;
+            isPlayerInAttackRange = false;
+        }
+        else if (distanceToPlayer <= attackRange)
+        { 
+            shouldRetreat = false;
+            isPlayerInAttackRange = true;
+        }
+        else
+        {
+            shouldRetreat = false;
+            isPlayerInAttackRange = false;
+        }
+
+        FlipTowardsPlayer();
+
+        if (isPlayerInAttackRange)
+        {
+            HandleBurstAttack();
+        }
+        else
+        {
+             if (shotsFiredInBurst > 0)
+             {
+                 shotsFiredInBurst = 0;
+             }
+        }
     }
 
     void FixedUpdate()
     {
+        if (rb == null) return;
 
+        if (shouldRetreat)
+        {
+            Debug.Log("Guard State: Retreating");
+            if (playerTarget != null) {
+                Vector2 directionAwayFromPlayer = (transform.position - playerTarget.position).normalized;
+                rb.linearVelocity = new Vector2(directionAwayFromPlayer.x * moveSpeed, rb.linearVelocity.y);
+            } else {
+                 rb.linearVelocity *= 0.9f;
+            }
+        }
+        else if (isPlayerInAttackRange)
+        {
+            Debug.Log("Guard State: Attacking/Idle");
+             Vector2 currentVelocity = rb.linearVelocity;
+             currentVelocity.x *= 0.8f;
+             rb.linearVelocity = currentVelocity;
+        }
+        else
+        {
+            Debug.Log("Guard State: Patrolling");
+            if (patrolBehaviour != null && patrolBehaviour.enabled)
+            {
+                patrolBehaviour.UpdatePatrolMovement();
+            }
+            else
+            {
+                 Debug.LogWarning("PatrolBehaviour missing or disabled!");
+                 rb.linearVelocity *= 0.9f;
+            }
+        }
     }
 
-    void FlipBasedOnVelocity()
+    void FlipTowardsPlayer()
     {
-        if (rb == null) return;
-        float horizontalVelocity = rb.linearVelocity.x;
-
-        if (Mathf.Abs(horizontalVelocity) > minimumVelocityToFlip)
-        {
-            transform.localScale = new Vector3(Mathf.Sign(horizontalVelocity) * Mathf.Abs(originalScaleX), transform.localScale.y, transform.localScale.z);
-        }
+        if (playerTarget == null) return;
+        float directionToPlayer = playerTarget.position.x - transform.position.x;
+        if (directionToPlayer > 0.01f)
+            transform.localScale = new Vector3(Mathf.Abs(originalScaleX), transform.localScale.y, transform.localScale.z);
+        else if (directionToPlayer < -0.01f)
+            transform.localScale = new Vector3(-Mathf.Abs(originalScaleX), transform.localScale.y, transform.localScale.z);
     }
 
     void HandleBurstAttack()
     {
-        if (playerTarget == null || projectilePrefab == null || firePoint == null) {
-            // Debug.Log("Guard Attack Check Failed: Missing references."); // Раскомментировать для отладки
-            return;
-        }
+        if (playerTarget == null || projectilePrefab == null || firePoint == null) return;
 
-        float distanceToPlayer = Vector2.Distance(transform.position, playerTarget.position);
-        bool canSeePlayer = CanSeePlayer();
-
-        if (distanceToPlayer <= attackRange && canSeePlayer && currentBurstCooldown <= 0)
+        if (currentBurstCooldown <= 0)
         {
-            if (shotsFiredInBurst == 0) 
+            if (shotsFiredInBurst == 0)
             {
-                Debug.Log("Guard: Starting new burst!");
-                shotsFiredInBurst = 0;
                 currentTimeBetweenShots = 0;
             }
-        }
-        else
-        {
-            if (shotsFiredInBurst > 0) {
-                Debug.Log("Guard: Burst interrupted.");
-                shotsFiredInBurst = shotsPerBurst;
-                currentBurstCooldown = burstCooldown; 
-             }
-        }
 
-
-        if (shotsFiredInBurst < shotsPerBurst && currentBurstCooldown <= 0 && currentTimeBetweenShots <= 0)
-        {
-            ShootBurst();
-            shotsFiredInBurst++;
-            currentTimeBetweenShots = timeBetweenShots;
-
-            if (shotsFiredInBurst >= shotsPerBurst)
+            if (shotsFiredInBurst < shotsPerBurst && currentTimeBetweenShots <= 0)
             {
-                Debug.Log("Guard: Burst finished, starting cooldown.");
-                currentBurstCooldown = burstCooldown;
-                shotsFiredInBurst = 0; 
+                ShootBurst();
+                shotsFiredInBurst++;
+                currentTimeBetweenShots = timeBetweenShots;
+
+                if (shotsFiredInBurst >= shotsPerBurst)
+                {
+                    currentBurstCooldown = burstCooldown;
+                    shotsFiredInBurst = 0;
+                }
             }
         }
     }
@@ -141,11 +200,6 @@ public class LemonGuardAI : MonoBehaviour
     }
 
     bool CanSeePlayer() {
-        if (playerTarget == null) return false;
-        
-        Vector2 directionToPlayer = playerTarget.position - transform.position;
-        
-        return true; 
+        return true;
     }
 }
-
