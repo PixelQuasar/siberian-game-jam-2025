@@ -7,6 +7,7 @@ public class LemonDroneAI : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform firePoint;
     private Collider2D droneCollider;
+    private float originalScaleX;
 
     private PatrolBehaviour patrolBehaviour;
 
@@ -52,6 +53,7 @@ public class LemonDroneAI : MonoBehaviour
         if (patrolBehaviour == null) Debug.LogError("PatrolBehaviour not found on drone!", this);
 
         nextFireTime = Time.time + Random.Range(0f, fireRate);
+        originalScaleX = transform.localScale.x;
     }
 
     void FixedUpdate()
@@ -80,9 +82,13 @@ public class LemonDroneAI : MonoBehaviour
 
     void Update()
     {
-         if (playerTarget == null || projectilePrefab == null) return;
+         if (playerTarget == null) return;
 
-         HandleShooting();
+         FlipTowardsPlayer();
+
+         if (projectilePrefab != null) {
+             HandleShooting();
+         }
     }
 
     void HandleCombatMovement()
@@ -175,5 +181,21 @@ public class LemonDroneAI : MonoBehaviour
         }
 
         Debug.Log("Drone fired!");
+    }
+
+    void FlipTowardsPlayer()
+    {
+        if (playerTarget == null) return;
+
+        float directionToTarget = playerTarget.position.x - transform.position.x;
+
+        if (directionToTarget > 0.01f)
+        {
+            transform.localScale = new Vector3(Mathf.Abs(originalScaleX), transform.localScale.y, transform.localScale.z);
+        }
+        else if (directionToTarget < -0.01f)
+        {
+            transform.localScale = new Vector3(-Mathf.Abs(originalScaleX), transform.localScale.y, transform.localScale.z);
+        }
     }
 }
