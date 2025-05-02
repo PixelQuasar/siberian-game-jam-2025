@@ -3,9 +3,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed = 15f;
-    public float jumpForce = 10f;
-
+    public float moveSpeed = 10f;
+    public float jumpForce = 15f;
     public Transform groundCheck;
     public float groundCheckRadius = 0.2f;
     public LayerMask groundLayer;
@@ -14,22 +13,28 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 moveDirection = Vector2.zero;
     private bool isGrounded;
 
+    private Vector2 aimWorldPosition;
+
+    private float originalScaleX;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        if (rb == null)
-        {
-            Debug.LogError("Rigidbody2D not found on " + gameObject.name);
-        }
-        if (groundCheck == null)
-        {
-            Debug.LogError("GroundCheck not assigned!");
-        }
+        if (rb == null) Debug.LogError("Rigidbody2D не найден!");
+        if (groundCheck == null) Debug.LogError("Объект GroundCheck не назначен!");
+
+        originalScaleX = transform.localScale.x;
     }
 
     void Update()
     {
         CheckIfGrounded();
+        FlipTowardsAim();
+    }
+
+    public void SetAimPosition(Vector2 worldPos)
+    {
+        aimWorldPosition = worldPos;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -48,8 +53,6 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         rb.linearVelocity = new Vector2(moveDirection.x * moveSpeed, rb.linearVelocity.y);
-
-        Flip();
     }
 
     void CheckIfGrounded()
@@ -57,15 +60,17 @@ public class PlayerMovement : MonoBehaviour
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
     }
 
-    void Flip()
+    void FlipTowardsAim()
     {
-        if (moveDirection.x > 0.1f)
+        float directionToAim = aimWorldPosition.x - transform.position.x;
+
+        if (directionToAim > 0.01f)
         {
-            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            transform.localScale = new Vector3(-Mathf.Abs(originalScaleX), transform.localScale.y, transform.localScale.z);
         }
-        else if (moveDirection.x < -0.1f)
+        else if (directionToAim < -0.01f)
         {
-            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            transform.localScale = new Vector3(Mathf.Abs(originalScaleX), transform.localScale.y, transform.localScale.z);
         }
     }
 
@@ -75,4 +80,4 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
     }
-} 
+}
