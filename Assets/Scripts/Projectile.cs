@@ -7,6 +7,12 @@ public class Projectile : MonoBehaviour
     public int damage = 10;
 
     private Rigidbody2D rb;
+    private Collider2D ownerCollider;
+
+    public void Initialize(Collider2D owner)
+    {
+        ownerCollider = owner;
+    }
 
     void Start()
     {
@@ -20,9 +26,20 @@ public class Projectile : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D otherCollider)
     {
+        if (otherCollider == ownerCollider)
+        {
+            return;
+        }
+
         Debug.Log($"Projectile hit: {otherCollider.gameObject.name}");
 
-        if (!otherCollider.CompareTag("Player") && !otherCollider.CompareTag("Projectile"))
+        PlayerHealth playerHealth = otherCollider.GetComponent<PlayerHealth>();
+        if (playerHealth != null)
+        {
+            playerHealth.TakeDamage(damage);
+        }
+
+        if (!otherCollider.CompareTag("Projectile"))
         {
             Destroy(gameObject);
         }
