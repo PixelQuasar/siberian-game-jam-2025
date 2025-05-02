@@ -1,0 +1,25 @@
+# Unity files
+*.unity merge=unityyamlmerge
+*.prefab merge=unityyamlmerge
+*.asset merge=unityyamlmerge
+*.mat merge=unityyamlmerge
+*.anim merge=unityyamlmerge
+*.controller merge=unityyamlmerge
+*.preset merge=unityyamlmerge
+*.overrideController merge=unityyamlmerge
+*.physicMaterial merge=unityyamlmerge
+*.physicsMaterial2D merge=unityyamlmerge
+*.playable merge=unityyamlmerge
+*.scenetemplate merge=unityyamlmerge
+*.spriteatlas merge=unityyamlmerge
+*.terrainlayer merge=unityyamlmerge
+*.flare merge=unityyamlmerge
+*.fontsettings merge=unityyamlmerge
+*.guiskin merge=unityyamlmerge
+*.rendertexture merge=unityyamlmerge
+*.shadervariants merge=unityyamlmerge
+*.mask merge=unityyamlmerge
+*.mixer merge=unityyamlmerge
+*.signal merge=unityyamlmerge
+*.texture2DArray merge=unityyamlmerge
+*.mesh merge=unityyamlmerge
