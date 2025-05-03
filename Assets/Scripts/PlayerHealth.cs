@@ -3,41 +3,23 @@ using TMPro;
 
 public class PlayerHealth : MonoBehaviour
 {
-    [Header("Health")]
-    [SerializeField] private int maxHealth = 100;
-    private int currentHealth;
+[   Header("Health")]
+    [SerializeField] private int maxHealth = 5;
 
-    [Header("UI")]
-    [Tooltip("Link to the text element for displaying HP.")]
-    public TextMeshProUGUI healthTextUI;
+    public int currentHealth;
 
     void Awake()
     {
         currentHealth = maxHealth;
+        Debug.Log($"Player health initialized: {currentHealth}/{maxHealth}");
     }
 
-    void Start()
-    {
-        UpdateHealthUI();
-    }
-
-    void UpdateHealthUI()
-    {
-        if (healthTextUI != null)
-        {
-            healthTextUI.text = $"HP: {currentHealth} / {maxHealth}";
-        }
-        else
-        {
-            Debug.LogWarning("Link to Health Text UI is not set in PlayerHealth!", this);
-        }
-    }
+    public int GetMaxHealth() { return maxHealth; }
 
     public void TakeDamage(int damageAmount)
     {
+        Debug.Log("DAMAGE");
         currentHealth = Mathf.Max(currentHealth - damageAmount, 0);
-
-        UpdateHealthUI();
 
         Debug.Log($"{gameObject.name} received {damageAmount} damage. Remaining HP: {currentHealth}");
 
@@ -45,12 +27,14 @@ public class PlayerHealth : MonoBehaviour
         {
             Die();
         }
+
+        float intensity = Mathf.Clamp01((float)damageAmount / 20f);
+        SmoothCameraFollow.Instance.Shake(intensity, 0.3f);
     }
 
     public void Heal(int healAmount)
     {
         currentHealth = Mathf.Min(currentHealth + healAmount, maxHealth);
-        UpdateHealthUI();
         Debug.Log($"{gameObject.name} healed for {healAmount}. Current HP: {currentHealth}");
     }
 

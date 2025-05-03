@@ -29,8 +29,6 @@ public class Projectile : MonoBehaviour
     {
         if (otherCollider == ownerCollider) return;
 
-        Debug.Log($"Projectile hit: {otherCollider.gameObject.name}");
-
         KnockbackReceiver knockbackTarget = otherCollider.GetComponent<KnockbackReceiver>();
         if (knockbackTarget != null)
         {

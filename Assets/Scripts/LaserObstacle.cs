@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class LaserObstacle : MonoBehaviour {
     public enum LaserState {
@@ -21,6 +22,9 @@ public class LaserObstacle : MonoBehaviour {
     public int damageToPlayer = 1;   // Урон, наносимый игроку  
     public bool damageOnStay = true; // Наносить урон в OnTriggerStay2D?
     public float damageInterval = 0.5f; // Как часто наносить урон при "зависании" в лазере
+
+    [Header("Light")]
+    public Light2D light;
 
     private SpriteRenderer spriteRenderer;
     private BoxCollider2D boxCollider2D;
@@ -77,6 +81,7 @@ public class LaserObstacle : MonoBehaviour {
 
         switch (newState) {
             case LaserState.Inactive:
+                light.intensity = 0f;
                 // Скрываем спрайт или ставим spriteInactive
                 if (spriteInactive == null)
                     spriteRenderer.enabled = false;
@@ -92,6 +97,7 @@ public class LaserObstacle : MonoBehaviour {
                 break;
 
             case LaserState.Activating:
+            light.intensity = 0.2f;
                 // Ставим силуэт (более блеклый спрайт)
                 spriteRenderer.enabled = true;
                 spriteRenderer.sprite = spriteActivating;
@@ -102,6 +108,7 @@ public class LaserObstacle : MonoBehaviour {
                 break;
 
             case LaserState.Active:
+            light.intensity = 1f;
                 // Включаем основной спрайт лазера
                 spriteRenderer.enabled = true;
                 spriteRenderer.sprite = spriteActive;
