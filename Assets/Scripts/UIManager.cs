@@ -85,8 +85,6 @@ public class UIManager : MonoBehaviour
         // Ограничиваем количество отображаемых иконок
         int displayHealth = Mathf.Min(currentHealth, maxDisplayedHealth);
 
-        Debug.Log($"AWAKE {displayHealth} {lastHealthValue}");
-
         // Обновляем UI только при изменении здоровья или принудительном обновлении
         if (forceUpdate || displayHealth != lastHealthValue)
         {
@@ -98,8 +96,6 @@ public class UIManager : MonoBehaviour
                 Destroy(child.gameObject);
             }
             healthIcons.Clear();
-
-            Debug.Log("DRAW");
 
             // Создаем иконки заново
             for (int i = 0; i < displayHealth; i++)

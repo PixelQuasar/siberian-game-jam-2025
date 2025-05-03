@@ -256,10 +256,12 @@ MonoBehaviour:
   moveSpeed: 12
   jumpForce: 10
   groundCheck: {fileID: 6103417910211045655}
-  groundCheckRadius: 0.05
+  groundCheckRadius: 0.2
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
+  extraGroundCheckDistance: 0.05
+  coyoteTime: 0.1
   gun: {fileID: 4246472440567650815}
   head: {fileID: 992932259866784961}
 --- !u!114 &7292260227759531259

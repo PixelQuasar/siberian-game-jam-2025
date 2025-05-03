@@ -178,8 +178,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 60
   lifetime: 1.5
-  damage: 10
+  damage: 1
   knockbackForce: 5
+  owner: 0
+  impactEffectPrefab: {fileID: 0}
+  pierceCount: 0
+  ignoreLayers:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &7386196514018422850
 GameObject:
   m_ObjectHideFlags: 0
