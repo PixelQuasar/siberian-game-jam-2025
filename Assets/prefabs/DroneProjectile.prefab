@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1064036434810909732}
   m_Layer: 0
   m_Name: DroneProjectile
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -177,5 +177,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 30
   lifetime: 1.5
-  damage: 1
+  damage: 10
   knockbackForce: 5
