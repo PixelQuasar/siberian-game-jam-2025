@@ -131,9 +131,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46cffb1e7710e49b7831540f441dfc6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTarget: {fileID: 0}
+  playerTarget: {fileID: 6741491510166303500, guid: aa23e4bb1cfde4d42985705fc56a96c5, type: 3}
   rb: {fileID: 0}
-  firePoint: {fileID: 0}
+  firePoint: {fileID: 3230861607645495627, guid: 52d127ddbb9dc4716a18901c7b6043ea, type: 3}
   moveSpeed: 3
   desiredHeight: 3
   detectionRange: 15
@@ -176,6 +176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   knockbackMultiplier: 1
+  airKnockbackDownForce: 2
 --- !u!1001 &442476211862316307
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -190,11 +191,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3230861607645495627, guid: 52d127ddbb9dc4716a18901c7b6043ea, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.051
       objectReference: {fileID: 0}
     - target: {fileID: 3230861607645495627, guid: 52d127ddbb9dc4716a18901c7b6043ea, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.181
       objectReference: {fileID: 0}
     - target: {fileID: 3230861607645495627, guid: 52d127ddbb9dc4716a18901c7b6043ea, type: 3}
       propertyPath: m_LocalPosition.z
