@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1853207276370830516}
   - component: {fileID: 735977224821132049}
   - component: {fileID: 1189964951638858376}
+  - component: {fileID: 3722439353331065789}
   m_Layer: 0
   m_Name: LemonDrone
   m_TagString: Untagged
@@ -177,6 +178,69 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   knockbackMultiplier: 1
   airKnockbackDownForce: 2
+--- !u!60 &3722439353331065789
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2858512217852823519}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.984375, y: 0.5}
+    newSize: {x: 0.63, y: 0.32}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.065, y: 0.16}
+      - {x: 0.027634636, y: 0.15736537}
+      - {x: -0.074999996, y: 0.16}
+      - {x: -0.2845808, y: 0.14958078}
+      - {x: -0.30110773, y: 0.1295808}
+      - {x: -0.3045808, y: 0.08736536}
+      - {x: -0.25152692, y: 0.05778454}
+      - {x: -0.15132463, y: 0.04440903}
+      - {x: -0.14931145, y: -0.023592453}
+      - {x: -0.13655744, y: -0.062754035}
+      - {x: -0.04451367, y: -0.07835268}
+      - {x: 0.019430917, y: -0.111377075}
+      - {x: 0.15374237, y: -0.010838408}
+      - {x: 0.13101831, y: 0.051849447}
+      - {x: 0.315, y: 0.07}
+      - {x: 0.315, y: 0.16}
+  m_UseDelaunayMesh: 0
 --- !u!1001 &442476211862316307
 PrefabInstance:
   m_ObjectHideFlags: 0

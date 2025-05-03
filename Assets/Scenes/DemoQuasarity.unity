@@ -402,6 +402,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &320902080 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3095571937237492824, guid: 90866217969c441ba852ad891e79963d, type: 3}
+  m_PrefabInstance: {fileID: 1103932957}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &382089857
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4498,6 +4503,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1853207276370830516, guid: 90866217969c441ba852ad891e79963d, type: 3}
+      propertyPath: firePoint
+      value: 
+      objectReference: {fileID: 320902080}
     - target: {fileID: 2858512217852823519, guid: 90866217969c441ba852ad891e79963d, type: 3}
       propertyPath: m_Name
       value: LemonDrone (1)
@@ -4633,6 +4642,11 @@ MonoBehaviour:
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 1
+--- !u!4 &1266344894 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3095571937237492824, guid: 90866217969c441ba852ad891e79963d, type: 3}
+  m_PrefabInstance: {fileID: 1596053393}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1350974206
 GameObject:
   m_ObjectHideFlags: 0
@@ -5024,6 +5038,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1853207276370830516, guid: 90866217969c441ba852ad891e79963d, type: 3}
+      propertyPath: firePoint
+      value: 
+      objectReference: {fileID: 1266344894}
     - target: {fileID: 2858512217852823519, guid: 90866217969c441ba852ad891e79963d, type: 3}
       propertyPath: m_Name
       value: LemonDrone (2)
