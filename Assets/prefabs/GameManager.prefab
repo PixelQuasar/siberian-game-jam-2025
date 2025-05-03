@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4035142426846116778}
   - component: {fileID: -2650061496571487742}
+  - component: {fileID: 4184162705564823780}
+  - component: {fileID: 1342472720203292927}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -47,3 +49,31 @@ MonoBehaviour:
   cursorSprite: {fileID: 514144892534032454, guid: aead2bb591d9641cc8319b855785f286, type: 3}
   hotSpot: {x: 0, y: 0}
   cursorMode: 0
+--- !u!114 &4184162705564823780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7684303894218080592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16da557cbb59e421a9641863816a0d7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeImage: {fileID: 8275474434001231388, guid: 3beaaf9a3fe8646afbd04716248efd0e, type: 3}
+  fadeDuration: 0.5
+--- !u!114 &1342472720203292927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7684303894218080592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4a14a56f551d44a4b3097d1f4a85e72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetElevator: {fileID: 0}
+  playerTag: Player
