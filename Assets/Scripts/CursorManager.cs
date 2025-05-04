@@ -53,8 +53,8 @@ public class CursorManager : MonoBehaviour
             Color[] pixels = sprite.texture.GetPixels(
                 (int)spriteRect.x,
                 (int)spriteRect.y,
-                (int)spriteRect.width,
-                (int)spriteRect.height
+                (int)spriteRect.width * 2,
+                (int)spriteRect.height * 2
             );
             newTex.SetPixels(pixels);
             newTex.Apply();
