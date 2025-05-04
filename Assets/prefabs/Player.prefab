@@ -237,7 +237,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
@@ -254,14 +254,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 12
-  jumpForce: 10
+  jumpForce: 15
   groundCheck: {fileID: 6103417910211045655}
-  groundCheckRadius: 0.2
+  groundCheckRadius: 0.05
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
   extraGroundCheckDistance: 0.05
   coyoteTime: 0.1
+  preventWallSticking: 1
+  wallCheckDistance: 0.2
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  wallSlidingGravityMultiplier: 2
   gun: {fileID: 4246472440567650815}
   head: {fileID: 992932259866784961}
 --- !u!114 &7292260227759531259
@@ -412,8 +418,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4a227e84198b4297a728c1ef61931b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 5
   currentHealth: 0
+  deathDelay: 1.5
+  deathEffectPrefab: {fileID: 0}
+  deathSound: {fileID: 0}
+  deathSoundVolume: 1
 --- !u!114 &146899818424273032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -535,7 +545,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7550849921355304590, guid: 39db4ddad1f1f4d1d88589af2be83c25, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.66
+      value: -0.501
       objectReference: {fileID: 0}
     - target: {fileID: 7550849921355304590, guid: 39db4ddad1f1f4d1d88589af2be83c25, type: 3}
       propertyPath: m_LocalPosition.z
