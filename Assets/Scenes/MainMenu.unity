@@ -1518,6 +1518,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4128986687245393327, guid: 0f9dde8118a214ac7bc5969b36780e36, type: 3}
+      propertyPath: gameSceneName
+      value: CutsceneScene
+      objectReference: {fileID: 0}
     - target: {fileID: 7395677442084755060, guid: 0f9dde8118a214ac7bc5969b36780e36, type: 3}
       propertyPath: m_Name
       value: MenuManager
