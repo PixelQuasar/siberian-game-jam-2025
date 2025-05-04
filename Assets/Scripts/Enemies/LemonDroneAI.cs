@@ -71,7 +71,7 @@ public class LemonDroneAI : MonoBehaviour
 
         if (!playerDetected) {
             if (patrolBehaviour != null && patrolBehaviour.enabled) {
-                Debug.Log("Drone State: Patroling");
+                // Debug.Log("Drone State: Patroling");
                 patrolBehaviour.UpdatePatrolMovement();
             }
             else {
@@ -109,7 +109,7 @@ public class LemonDroneAI : MonoBehaviour
         {
             targetPosition = (Vector2)playerTarget.position + Vector2.up * desiredHeight;
             desiredVelocity = (targetPosition - (Vector2)transform.position).normalized * moveSpeed;
-            Debug.Log("Drone State: Approaching");
+            // Debug.Log("Drone State: Approaching");
         }
         else if (distanceToPlayer < closeDistance)
         {
@@ -118,7 +118,7 @@ public class LemonDroneAI : MonoBehaviour
             float heightError = (playerTarget.position.y + desiredHeight) - transform.position.y;
             Vector2 verticalVelocity = Vector2.up * heightError * hoverForce;
             desiredVelocity = horizontalVelocity + verticalVelocity;
-             Debug.Log("Drone State: Retreating");
+            // Debug.Log("Drone State: Retreating");
         }
         else
         {

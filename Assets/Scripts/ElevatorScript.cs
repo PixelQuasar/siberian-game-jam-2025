@@ -102,8 +102,8 @@ public class ElevatorScript : MonoBehaviour
             yield return StartCoroutine(FadeScreen(true));
             Debug.Log("Screen faded out.");
         } else {
-             Debug.LogWarning("Fade Image не назначен, пропускаем затемнение.");
-             yield return new WaitForSeconds(0.5f); // Небольшая пауза вместо затемнения
+             Debug.LogWarning("Fade Image not assigned, skipping fade.");
+             yield return new WaitForSeconds(0.5f);
         }
 
 

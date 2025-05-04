@@ -32,7 +32,7 @@ public class SceneFadeIn : MonoBehaviour
 
         if (fadeImage != null)
         {
-            fadeImage.gameObject.SetActive(false);
+            // fadeImage.gameObject.SetActive(false);
         }
     }
 

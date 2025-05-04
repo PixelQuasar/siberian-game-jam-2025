@@ -120,22 +120,20 @@ public class LemonGuardAI : MonoBehaviour
         }
         else if (isPlayerInAttackRange)
         {
-            Debug.Log("Guard State: Attacking/Idle");
              Vector2 currentVelocity = rb.linearVelocity;
              currentVelocity.x *= 0.8f;
              rb.linearVelocity = currentVelocity;
         }
         else
         {
-            Debug.Log("Guard State: Patrolling");
             if (patrolBehaviour != null && patrolBehaviour.enabled)
             {
                 patrolBehaviour.UpdatePatrolMovement();
             }
             else
             {
-                 Debug.LogWarning("PatrolBehaviour missing or disabled!");
-                 rb.linearVelocity *= 0.9f;
+                // Debug.LogWarning("PatrolBehaviour missing or disabled!");
+                rb.linearVelocity *= 0.9f;
             }
         }
     }
