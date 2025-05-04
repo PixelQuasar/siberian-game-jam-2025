@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class SenorPomidorAI : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class SenorPomidorAI : MonoBehaviour
     [SerializeField] private float tooCloseDistance = 4f;
     [SerializeField] private float tooFarDistance = 12f;
     private Vector2 movementDirection = Vector2.zero;
+
+    public string sceneNameToLoad = "Final";
 
     [Header("Attack Settings")]
     [SerializeField] private float timeBetweenAttacks = 3f;
@@ -57,6 +60,8 @@ public class SenorPomidorAI : MonoBehaviour
     [SerializeField] private float defaultGravityScale = 3f;
     private RigidbodyType2D originalBodyType;
 
+    private bool shoot = false;
+
     private enum BossState
     {
         Idle,
@@ -72,7 +77,7 @@ public class SenorPomidorAI : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         bossCollider = GetComponent<Collider2D>();
-        // animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
 
         if (spriteRenderer != null)
         {
@@ -113,6 +118,8 @@ public class SenorPomidorAI : MonoBehaviour
 
     void Update()
     {
+        FacePlayer();
+        SetAnimatorSpeedValue();
         if (playerTarget == null || currentState == BossState.Dead)
         {
             if (rb != null && currentState == BossState.Dead)
@@ -134,7 +141,7 @@ public class SenorPomidorAI : MonoBehaviour
         switch (currentState)
         {
             case BossState.Idle:
-                FacePlayer();
+                
                 if (attackCooldownTimer <= 0)
                 {
                     ChooseAndStartAttack();
@@ -142,7 +149,7 @@ public class SenorPomidorAI : MonoBehaviour
                 break;
 
             case BossState.Chasing:
-                FacePlayer();
+                
                 movementDirection = (playerTarget.position - transform.position).normalized;
                 break;
 
@@ -150,7 +157,7 @@ public class SenorPomidorAI : MonoBehaviour
                 break;
 
             case BossState.Cooldown:
-                FacePlayer();
+                
                 if (distanceToPlayer > tooFarDistance)
                 {
                     movementDirection = (playerTarget.position - transform.position).normalized;
@@ -296,7 +303,7 @@ public class SenorPomidorAI : MonoBehaviour
         }
         else
         {
-            chargeDirection = spriteRenderer.flipX ? Vector2.left : Vector2.right;
+            chargeDirection = !spriteRenderer.flipX ? Vector2.left : Vector2.right;
         }
         
         yield return new WaitForSeconds(chargePrepareTime);
@@ -323,6 +330,7 @@ public class SenorPomidorAI : MonoBehaviour
 
      System.Collections.IEnumerator ProjectileVolleyAttack()
     {
+        shoot = true;
         Debug.Log("Preparing Projectile Volley...");
         currentState = BossState.Attacking;
 
@@ -332,6 +340,7 @@ public class SenorPomidorAI : MonoBehaviour
         yield return new WaitForSeconds(volleyPrepareTime);
 
         Debug.Log("Firing Volley!");
+        shoot = false;
         if (projectilePrefab == null)
         {
              Debug.LogError("Projectile Prefab not assigned in SenorPomidorAI!");
@@ -415,6 +424,7 @@ public class SenorPomidorAI : MonoBehaviour
 
     void Die()
     {
+        SceneManager.LoadScene(sceneNameToLoad);
         Debug.Log("Senor Pomidor is defeated!");
         currentState = BossState.Dead;
         StopAllCoroutines();
@@ -427,15 +437,16 @@ public class SenorPomidorAI : MonoBehaviour
     {
         if (playerTarget == null || spriteRenderer == null) return;
 
-        if (playerTarget.position.x > rb.position.x)
+        if (playerTarget.position.x > transform.position.x)
+        {
+            spriteRenderer.flipX = true;
+        }
+        else if (playerTarget.position.x < transform.position.x)
         {
             spriteRenderer.flipX = false;
         }
-        else if (playerTarget.position.x < rb.position.x)
-        {
-             spriteRenderer.flipX = true;
-        }
     }
+
 
     void FaceDirection(Vector2 direction)
     {
@@ -468,5 +479,12 @@ public class SenorPomidorAI : MonoBehaviour
                 playerHealth.TakeDamage((int)chargeDamage);
             }
         }
+    }
+
+    void SetAnimatorSpeedValue() 
+    {
+        float speed = Mathf.Abs(rb.linearVelocity.magnitude);
+        animator.SetFloat("Speed", speed);
+        animator.SetBool("Shoot", shoot);
     }
 }
