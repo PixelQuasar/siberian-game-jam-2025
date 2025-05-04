@@ -178,7 +178,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 15
   lifetime: 1.5
-  damage: 1
+  damage: 0
   knockbackForce: 5
   owner: 1
   impactEffectPrefab: {fileID: 0}

@@ -100,7 +100,7 @@ public class PhysicalPart : MonoBehaviour
         }
             
         // Уничтожаем объект после окончания полного времени жизни
-        if (age > lifetime && !isFading)
+        if (age > lifetime * 2)
         {
             Destroy(gameObject);
         }
