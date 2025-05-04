@@ -211,7 +211,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageAmount: 1
-  damageOnce: 1
+  damageOnce: 0
   damageCooldown: 10
   knockbackForce: 10
   knockbackDuration: 0.25
