@@ -3,15 +3,9 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
-using System;  // Для Action
+using System;
 
-using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UI;
-using TMPro;
-using System.Collections;
-using System;  // Для Action
-
+[RequireComponent(typeof(AudioSource))]
 public class PlayerShooting : MonoBehaviour
 {
     [Header("References")]
@@ -24,15 +18,22 @@ public class PlayerShooting : MonoBehaviour
     [Header("Ammo System")]
     public int magazineSize = 6;             // Размер магазина
     public int totalAmmo = 30;               // Общее количество патронов
-    public float reloadTime = 1.5f;          // Время перезарядки в секундах
+    public float reloadTime = 2f;          // Время перезарядки в секундах
     public TextMeshProUGUI ammoText;         // UI текст для отображения патронов
     
-    [Header("Effects")]
+    [Header("Effects - Audio Clips")]
     public AudioClip shootSound;
     public AudioClip reloadSound;            
     public AudioClip emptyClickSound;
-    public GameObject muzzleFlashPrefab;
+
+    [Header("Effects - Audio Volumes")]
+    [Range(0f, 1f)] public float shootVolume = 0.5f;
+    [Range(0f, 1f)] public float reloadVolume = 1.0f;
+    [Range(0f, 1f)] public float emptyClickVolume = 0.9f;
     
+    [Header("Effects - Visuals")]
+    public GameObject muzzleFlashPrefab;
+
     [Header("Settings")]
     public float cooldownTime = 0.2f; // Время между выстрелами
     public LayerMask projectileLayer; // Слой для снарядов
@@ -48,19 +49,22 @@ public class PlayerShooting : MonoBehaviour
     private Collider2D playerCollider;
     private Vector3 gunOriginalPosition;
     private SpriteRenderer mySR;
+    private AudioSource audioSource;
 
     public event Action<int, int> OnAmmoChanged;
     
     void Awake() 
     {
-        // Получаем коллайдер игрока сразу в Awake
         playerCollider = GetComponent<Collider2D>();
         mySR = GetComponent<SpriteRenderer>();
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null) {
+             Debug.LogError("AudioSource component not found on this GameObject!", this);
+        }
     }
     
     void Start()
     {
-        // Важно проверить, получили ли мы коллайдер
         if (playerCollider == null)
         {
             Debug.LogError("Collider2D not found on player! Projectiles may collide with it.", this);
@@ -76,7 +80,6 @@ public class PlayerShooting : MonoBehaviour
             Debug.LogWarning("Gun transform not assigned! Recoil effect will not work.", this);
         }
         
-        // Инициализация патронов
         currentAmmo = magazineSize;
         UpdateAmmoUI();
         
@@ -109,10 +112,9 @@ public class PlayerShooting : MonoBehaviour
     {
         isReloading = true;
         
-        // Воспроизводим звук перезарядки
-        if (reloadSound != null)
+        if (reloadSound != null && audioSource != null) 
         {
-            AudioSource.PlayClipAtPoint(reloadSound, transform.position);
+            audioSource.PlayOneShot(reloadSound, reloadVolume); 
         }
         
         // Ждем заданное время
@@ -159,7 +161,7 @@ public class PlayerShooting : MonoBehaviour
             else
             {
                 // Щелчок пустого оружия
-                //PlayEmptyClickSound();
+                PlayEmptyClickSound(); // Вызываем звук пустого магазина
                 // Автоматическая перезарядка при попытке выстрелить с пустым магазином
                 if (totalAmmo > 0)
                 {
@@ -190,10 +192,9 @@ public class PlayerShooting : MonoBehaviour
             SmoothCameraFollow.Instance.Shake(Mathf.Clamp01(1f / 50f), 0.3f);
         }
         
-        // Проигрываем звук выстрела
-        if (shootSound != null)
+        if (shootSound != null && audioSource != null) 
         {
-            AudioSource.PlayClipAtPoint(shootSound, transform.position);
+            audioSource.PlayOneShot(shootSound, shootVolume); 
         }
 
         // Создаем снаряд
@@ -204,7 +205,7 @@ public class PlayerShooting : MonoBehaviour
         if (projectileCollider != null && playerCollider != null)
         {
             Physics2D.IgnoreCollision(projectileCollider, playerCollider, true);
-            Debug.Log("Ignoring collision between projectile and player");
+            // Debug.Log("Ignoring collision between projectile and player"); // Можно убрать лишний лог
         }
         else 
         {
@@ -267,6 +268,16 @@ public class PlayerShooting : MonoBehaviour
                 shellScript.SetEjectionDirection(mySR.flipX ? -1 : 1);
             }
         }
+    }
+    
+    // Функция для звука пустого магазина
+    private void PlayEmptyClickSound() 
+    {
+         if (emptyClickSound != null && audioSource != null) 
+         {
+              audioSource.PlayOneShot(emptyClickSound, emptyClickVolume);
+              Debug.Log("Playing Empty Click Sound");
+         }
     }
 
     IEnumerator RecoilEffect()
