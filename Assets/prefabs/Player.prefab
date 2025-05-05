@@ -353,7 +353,19 @@ MonoBehaviour:
     m_ActionId: 19ff673d-9a03-4313-928b-ee1ff1897e59
     m_ActionName: 'UI/Dialog[/Keyboard/space]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 146899818424273032}
+        m_TargetAssemblyTypeName: PlayerShooting, Assembly-CSharp
+        m_MethodName: OnReload
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 2cf8ea2c-3e3c-43ba-9826-cc83b8d2609f
     m_ActionName: 'Player/Reload[/Keyboard/r]'
   m_NeverAutoSwitchControlSchemes: 0
@@ -449,6 +461,9 @@ MonoBehaviour:
   shootSound: {fileID: 8300000, guid: a2729c2bd15d44ecc970c72b72048e1b, type: 3}
   reloadSound: {fileID: 8300000, guid: bde1a21d9a15340d3bdf0ed19529e803, type: 3}
   emptyClickSound: {fileID: 8300000, guid: 99b722a1430934eefa1c8745eb633fd5, type: 3}
+  shootVolume: 0.5
+  reloadVolume: 1
+  emptyClickVolume: 0.9
   muzzleFlashPrefab: {fileID: 0}
   cooldownTime: 0.2
   projectileLayer:
