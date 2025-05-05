@@ -152,4 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 6741491510166303500, guid: aa23e4bb1cfde4d42985705fc56a96c5, type: 3}
   smoothTime: 0.3
-  offset: {x: 0, y: 2, z: 0}
+  offset: {x: 5, y: 2, z: 0}
+  maxShakeOffset: 1
+  maxShakeRotation: 3
+  shakeDamping: 5
