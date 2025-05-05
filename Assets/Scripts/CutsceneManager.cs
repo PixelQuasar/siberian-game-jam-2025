@@ -23,10 +23,13 @@ public class CutsceneManager : MonoBehaviour
     public float fadeOutDuration = 0.25f;
     [Tooltip("Duration of new text appearing")]
     public float fadeInDuration = 0.25f;
+    [Tooltip("Delay before input is accepted after scene starts")]
+    public float inputDelay = 1f;
 
     private int currentLine = 0;
     private bool cutsceneFinished = false;
     private bool isTransitioning = false;
+    private bool canAcceptInput = false;
 
     void Start()
     {
@@ -36,15 +39,25 @@ public class CutsceneManager : MonoBehaviour
 
         cutsceneFinished = false;
         isTransitioning = false;
+        canAcceptInput = false;
         currentLine = 0;
 
         cutsceneTextElement.text = dialogueLines[currentLine];
         cutsceneTextElement.canvasRenderer.SetAlpha(1.0f);
+
+        StartCoroutine(EnableInputAfterDelay(inputDelay));
+    }
+
+    IEnumerator EnableInputAfterDelay(float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+        canAcceptInput = true;
+        Debug.Log("Cutscene input enabled.");
     }
 
     void Update()
     {
-        if (!isTransitioning && !cutsceneFinished)
+        if (canAcceptInput && !isTransitioning && !cutsceneFinished)
         {
             bool nextPressed = (Keyboard.current != null && (Keyboard.current.enterKey.wasPressedThisFrame || Keyboard.current.numpadEnterKey.wasPressedThisFrame || Keyboard.current.spaceKey.wasPressedThisFrame))
                               || (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame);
@@ -58,7 +71,7 @@ public class CutsceneManager : MonoBehaviour
 
     public void ShowNextLine()
     {
-        if (isTransitioning || cutsceneFinished) return;
+        if (!canAcceptInput || isTransitioning || cutsceneFinished) return;
 
         currentLine++;
 
