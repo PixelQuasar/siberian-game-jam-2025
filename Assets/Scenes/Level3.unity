@@ -18770,7 +18770,7 @@ PrefabInstance:
       objectReference: {fileID: 1581915278}
     - target: {fileID: 3143438530862988649, guid: 2fe92aaa6e82a4f9cb274b3af6ceef79, type: 3}
       propertyPath: maxHealth
-      value: 48
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3143438530862988649, guid: 2fe92aaa6e82a4f9cb274b3af6ceef79, type: 3}
       propertyPath: chargeDamage
@@ -18822,6 +18822,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8492455488096878994, guid: 2fe92aaa6e82a4f9cb274b3af6ceef79, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1282771342}
+    - targetCorrespondingSourceObject: {fileID: 8492455488096878994, guid: 2fe92aaa6e82a4f9cb274b3af6ceef79, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1282771348}
   m_SourcePrefab: {fileID: 100100000, guid: 2fe92aaa6e82a4f9cb274b3af6ceef79, type: 3}
 --- !u!1 &1010125872
 GameObject:
@@ -19323,6 +19326,34 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3060464091647625258, guid: 2fe92aaa6e82a4f9cb274b3af6ceef79, type: 3}
   m_PrefabInstance: {fileID: 953982062}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1282771348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1282771341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ad25e8c625d344aa8af23eac062017a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 30
+  currentHealth: 0
+  invincibilityTime: 0.01
+  flashDuringInvincibility: 1
+  corpsePrefab: {fileID: 0}
+  transferVelocityToCorpse: 1
+  destroyDelay: 0.2
+  hitFlashMaterial: {fileID: 2100000, guid: f2e7d80ff39a24e3cb597c8367046de9, type: 2}
+  hitFlashDuration: 0.1
+  hitFlashColor: {r: 1, g: 0, b: 0, a: 1}
+  deathEffectPrefab: {fileID: 0}
+  hitSound: {fileID: 0}
+  deathSound: {fileID: 0}
+  dropChance: 0.5
+  itemDropPrefab: {fileID: 0}
+  nextScene: Final
 --- !u!1 &1289046390
 GameObject:
   m_ObjectHideFlags: 0
@@ -20092,7 +20123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}

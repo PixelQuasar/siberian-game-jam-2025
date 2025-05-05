@@ -6,7 +6,7 @@ using System.Collections;          // Для использования кору
 public class PlayerHealth : MonoBehaviour
 {
     [Header("Health")]
-    [SerializeField] private int maxHealth = 5;
+    [SerializeField] private int maxHealth = 6;
     public int currentHealth;
 
     [Header("Death Settings")]

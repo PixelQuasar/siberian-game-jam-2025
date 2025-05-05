@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class EnemyHealth : MonoBehaviour
 {
@@ -43,6 +44,8 @@ public class EnemyHealth : MonoBehaviour
     public float dropChance = 0.5f;
     [Tooltip("Префаб предмета для дропа")]
     public GameObject itemDropPrefab;
+
+    public string nextScene = "";
     
     // Приватные переменные
     private SpriteRenderer spriteRenderer;
@@ -147,6 +150,10 @@ public class EnemyHealth : MonoBehaviour
         if (deathEffectPrefab != null)
         {
             Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
+        }
+
+        if (nextScene != "") {
+            SceneManager.LoadScene(nextScene);
         }
         
         // Спавним труп

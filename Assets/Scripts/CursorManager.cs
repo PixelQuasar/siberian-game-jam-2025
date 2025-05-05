@@ -35,7 +35,7 @@ public class CursorManager : MonoBehaviour
         }
 
         SetCustomCursor();
-        Cursor.visible = false;
+        Cursor.visible = true;
     }
 
     Texture2D GenerateTextureFromSprite(Sprite sprite)
